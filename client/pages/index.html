@@ -3,11 +3,219 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Medical Assistent</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medical Assistant</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-color: #1e1e2f;
+      color: #ddd;
+      padding: 20px;
+    }
+
+    .chat-container {
+      max-width: 700px;
+      width: 100%;
+      background-color: #2a2a3e;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .title {
+      text-align: center;
+      font-size: 1.8em;
+      color: #4db6ac;
+    }
+
+    .chat-box {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 400px;
+      overflow-y: auto;
+      padding-right: 10px;
+    }
+
+    .message {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .message.user .bubble {
+      background-color: #44475a;
+      color: #f8f8f2;
+      align-self: flex-end;
+    }
+
+    .message.assistant .bubble {
+      background-color: #37384d;
+      color: #f8f8f2;
+    }
+
+    .bubble {
+      padding: 10px 15px;
+      border-radius: 15px;
+      max-width: 80%;
+      font-size: 0.9em;
+      word-wrap: break-word;
+    }
+
+    .input-area {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .input-text {
+      width: 100%;
+      padding: 10px;
+      font-size: 1em;
+      background-color: #37384d;
+      color: #f8f8f2;
+      border: 1px solid #44475a;
+      border-radius: 8px;
+      outline: none;
+      resize: none;
+    }
+
+    .input-file {
+      display: none;
+    }
+
+    .input-label {
+      cursor: pointer;
+      padding: 8px 15px;
+      font-size: 0.9em;
+      color: #4db6ac;
+      border: 1px solid #4db6ac;
+      border-radius: 5px;
+      text-align: center;
+      width: fit-content;
+    }
+
+    .send-button {
+      align-self: flex-end;
+      padding: 10px 20px;
+      font-size: 1em;
+      color: #f8f8f2;
+      background-color: #4db6ac;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .send-button:hover {
+      background-color: #439d94;
+    }
+
+    @media (max-width: 768px) {
+      .chat-container {
+        padding: 15px;
+      }
+
+      .title {
+        font-size: 1.5em;
+      }
+
+      .input-label,
+      .send-button {
+        font-size: 0.9em;
+        padding: 8px 12px;
+      }
+
+      .input-text {
+        font-size: 0.9em;
+      }
+    }
+  </style>
+
+  <script>
+    $(document).ready(function () {
+      const inputText = $('.input-text');
+      const imageUpload = $('#image-upload');
+      const sendButton = $('.send-button');
+
+      function postData() {
+        const text = inputText.val().trim();
+        const imageFile = imageUpload[0].files[0];
+
+        if (text || imageFile) {
+          if (imageFile) {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+              const imageData = event.target.result;
+              sendRequest(text, imageData);
+            };
+            reader.readAsDataURL(imageFile);
+          } else {
+            sendRequest(text, null);
+          }
+        }
+        inputText.val('');
+        imageUpload.val(null);
+      }
+
+      function sendRequest(text, imageData) {
+        $.ajax({
+          url: '/api',
+          type: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({"text": text, "img": imageData}),
+          success: function (response) {
+            console.log("Response:", response);
+          },
+          error: function (error) {
+            console.error("Error:", error);
+          }
+        });
+      }
+
+      sendButton.on('click', postData);
+
+      inputText.on('keypress', function (event) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+          event.preventDefault();
+          postData();
+        }
+      });
+    });
+  </script>
 </head>
 
 <body>
-    <h1>Medical Assistent</h1>
+  <div class="chat-container">
+    <h1 class="title">Medical Assistant</h1>
+    <div class="chat-box">
+      <!-- Chat messages will appear here -->
+      <div class="message assistant">
+        <div class="bubble">Hello! How can I assist you today?</div>
+      </div>
+    </div>
+
+    <div class="input-area">
+      <textarea class="input-text" rows="3" placeholder="Type your question..."></textarea>
+      <label class="input-label" for="image-upload">Upload Image</label>
+      <input type="file" id="image-upload" class="input-file" accept="image/*">
+      <button class="send-button">Send</button>
+    </div>
+  </div>
 </body>
 
 </html>
