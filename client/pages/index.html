@@ -8,41 +8,58 @@
       integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
       crossorigin="anonymous"
     ></script>
+
     <style>
-      /* Professional Dark Scheme */
+      /* Enhanced Medical-Themed Light Gradient Scheme */
       body {
         font-family: Arial, sans-serif;
-        background-color: #2a2e35;
-        color: #d1d5db;
+        background: linear-gradient(
+          135deg,
+          #e0f7fa 20%,
+          #ffffff 50%,
+          #f8d7da 80%
+        );
+        color: #2e2e2e;
         margin: 0;
         padding: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .container {
         width: 90%;
         max-width: 600px;
-        margin: 50px auto;
-        background-color: #3a3f47;
+        background-color: #ffffff;
         padding: 30px;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
-        border-radius: 10px;
+        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+        border-radius: 16px;
+        transition: transform 0.3s;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .container:hover {
+        transform: scale(1.02);
       }
 
       h1 {
         text-align: center;
-        color: #ffffff;
+        color: #00796b;
         margin-bottom: 30px;
-        font-size: 1.8rem;
+        font-size: 2rem;
+        font-weight: bold;
       }
 
       .output {
         min-height: 200px;
-        border: 1px solid #4b5563;
+        border: 1px solid #b2dfdb;
         padding: 15px;
         margin-bottom: 20px;
-        background-color: #2a2e35;
-        color: #cbd5e1;
-        border-radius: 8px;
+        background-color: #e0f2f1;
+        color: #004d40;
+        border-radius: 10px;
         overflow-y: auto;
       }
 
@@ -51,38 +68,118 @@
         flex-direction: column;
       }
 
-      .input input[type="text"],
-      .input input[type="file"] {
+      .input input[type="text"] {
         margin-bottom: 15px;
         padding: 12px;
-        border-radius: 6px;
-        border: 1px solid #4b5563;
+        border-radius: 8px;
+        border: 1px solid #80cbc4;
         font-size: 16px;
-        background-color: #3a3f47;
-        color: #d1d5db;
+        background-color: #ffffff;
+        color: #004d40;
+        transition: border-color 0.3s;
       }
 
       .input input[type="text"]::placeholder {
-        color: #9ca3af;
+        color: #78909c;
       }
 
+      .input input[type="text"]:focus {
+        border-color: #4db6ac;
+        outline: none;
+      }
+
+      /* File input and label button styling */
+      .file-input-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 25px;
+        /* Extra space to prevent overlap */
+      }
+
+      .input input[type="file"] {
+        color: #474747;
+        /* Red color for text */
+        font-size: 16px;
+        border: 1px solid #4db6ac;
+        /* Green border */
+        border-radius: 8px;
+        background-color: #ffffff;
+        /* White background */
+        padding: 10px 15px;
+        cursor: pointer;
+        transition:
+          background-color 0.3s,
+          box-shadow 0.3s,
+          color 0.3s;
+        width: auto;
+      }
+
+      .input input[type="file"]::file-selector-button {
+        padding: 10px 15px;
+        background-color: #ffffff;
+        color: #e53935;
+        /* Red color for text */
+        font-size: 16px;
+        font-weight: bold;
+        border: 1px solid #97b0ae;
+        /* Green border */
+        border-radius: 8px;
+        cursor: pointer;
+        transition:
+          background-color 0.3s,
+          color 0.3s,
+          box-shadow 0.3s;
+      }
+
+      .input input[type="file"]::file-selector-button:hover {
+        background-color: #e53935;
+        color: #ffffff;
+        /* Change text to white on hover */
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Send button styling */
       .input button {
         padding: 12px;
-        background-color: #2563eb;
-        /* Soft blue color */
+        background-color: #00897b;
         color: #ffffff;
         font-size: 16px;
         font-weight: bold;
         border: none;
-        border-radius: 6px;
+        border-radius: 8px;
         cursor: pointer;
-        transition: background-color 0.3s;
+        transition:
+          background-color 0.3s,
+          box-shadow 0.3s;
+        margin-top: 15px;
+        /* Added spacing to separate it from the file input */
       }
 
       .input button:hover {
-        background-color: #1e40af;
+        background-color: #00695c;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Responsive Design */
+      @media (max-width: 600px) {
+        .container {
+          padding: 20px;
+        }
+
+        h1 {
+          font-size: 1.5rem;
+        }
+
+        .input input[type="text"],
+        .input button,
+        .input input[type="file"]::file-selector-button {
+          font-size: 14px;
+          padding: 8px 12px;
+        }
       }
     </style>
+
     <script>
       function send() {
         const textInput = $("#text-input").val();
@@ -94,11 +191,13 @@
           reader.onloadend = () => {
             img = reader.result;
             console.log("Image Data URL: ", img);
+            $("button").text("Sending...");
             sendAjaxRequest(textInput, img);
           };
           reader.readAsDataURL(file);
         } else {
           console.log("No image selected.");
+          $("button").text("Sending...");
           sendAjaxRequest(textInput, img);
         }
       }
@@ -111,9 +210,12 @@
           contentType: "application/json",
           success: function (response) {
             $(".output").html(response);
+            $("button").text("Send");
           },
           error: function (error) {
             console.log("Error: ", error);
+            $(".output").text("Error occurred. Please try again.");
+            $("button").text("Send");
           },
         });
       }
