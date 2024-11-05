@@ -1,242 +1,263 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Medical Assistant</title>
-    <script
-      src="https://code.jquery.com/jquery-3.7.1.min.js"
-      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-      crossorigin="anonymous"
-    ></script>
 
-    <style>
-      /* Enhanced Medical-Themed Light Gradient Scheme */
-      body {
-        font-family: Arial, sans-serif;
-        background: linear-gradient(
-          135deg,
+<head>
+  <meta charset="UTF-8" />
+  <title>Medical Assistant</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+  <style>
+    /* Enhanced Medical-Themed Light Gradient Scheme */
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg,
           #e0f7fa 20%,
           #ffffff 50%,
-          #f8d7da 80%
-        );
-        color: #2e2e2e;
-        margin: 0;
-        padding: 0;
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+          #f8d7da 80%);
+      color: #2e2e2e;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
+    .container {
+      width: 90%;
+      max-width: 600px;
+      background-color: #ffffff;
+      padding: 30px;
+      box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+      border-radius: 16px;
+      transition: transform 0.3s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container:hover {
+      transform: scale(1.02);
+    }
+
+    h1 {
+      text-align: center;
+      color: #00796b;
+      margin-bottom: 30px;
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+    .output {
+      min-height: 200px;
+      border: 1px solid #b2dfdb;
+      padding: 15px;
+      margin-bottom: 20px;
+      background-color: #e0f2f1;
+      color: #004d40;
+      border-radius: 10px;
+      overflow-y: auto;
+    }
+
+    .input {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .input input[type="text"] {
+      margin-bottom: 15px;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #80cbc4;
+      font-size: 16px;
+      background-color: #ffffff;
+      color: #004d40;
+      transition: border-color 0.3s;
+    }
+
+    .input input[type="text"]::placeholder {
+      color: #78909c;
+    }
+
+    .input input[type="text"]:focus {
+      border-color: #4db6ac;
+      outline: none;
+    }
+
+    /* File input and label button styling */
+    .file-input-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 25px;
+      /* Extra space to prevent overlap */
+    }
+
+    .input input[type="file"] {
+      color: #474747;
+      /* Red color for text */
+      font-size: 16px;
+      border: 1px solid #4db6ac;
+      /* Green border */
+      border-radius: 8px;
+      background-color: #ffffff;
+      /* White background */
+      padding: 10px 15px;
+      cursor: pointer;
+      transition:
+        background-color 0.3s,
+        box-shadow 0.3s,
+        color 0.3s;
+      width: auto;
+    }
+
+    .input input[type="file"]::file-selector-button {
+      padding: 10px 15px;
+      background-color: #ffffff;
+      color: #e53935;
+      /* Red color for text */
+      font-size: 16px;
+      font-weight: bold;
+      border: 1px solid #97b0ae;
+      /* Green border */
+      border-radius: 8px;
+      cursor: pointer;
+      transition:
+        background-color 0.3s,
+        color 0.3s,
+        box-shadow 0.3s;
+    }
+
+    .input input[type="file"]::file-selector-button:hover {
+      background-color: #e53935;
+      color: #ffffff;
+      /* Change text to white on hover */
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Send button styling */
+    .input button {
+      padding: 12px;
+      background-color: #00897b;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition:
+        background-color 0.3s,
+        box-shadow 0.3s;
+      margin-top: 15px;
+      /* Added spacing to separate it from the file input */
+    }
+
+    .input button:hover {
+      background-color: #00695c;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 600px) {
       .container {
-        width: 90%;
-        max-width: 600px;
-        background-color: #ffffff;
-        padding: 30px;
-        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
-        border-radius: 16px;
-        transition: transform 0.3s;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .container:hover {
-        transform: scale(1.02);
+        padding: 20px;
       }
 
       h1 {
-        text-align: center;
-        color: #00796b;
-        margin-bottom: 30px;
-        font-size: 2rem;
-        font-weight: bold;
+        font-size: 1.5rem;
       }
 
-      .output {
-        min-height: 200px;
-        border: 1px solid #b2dfdb;
-        padding: 15px;
-        margin-bottom: 20px;
-        background-color: #e0f2f1;
-        color: #004d40;
-        border-radius: 10px;
-        overflow-y: auto;
-      }
-
-      .input {
-        display: flex;
-        flex-direction: column;
-      }
-
-      .input input[type="text"] {
-        margin-bottom: 15px;
-        padding: 12px;
-        border-radius: 8px;
-        border: 1px solid #80cbc4;
-        font-size: 16px;
-        background-color: #ffffff;
-        color: #004d40;
-        transition: border-color 0.3s;
-      }
-
-      .input input[type="text"]::placeholder {
-        color: #78909c;
-      }
-
-      .input input[type="text"]:focus {
-        border-color: #4db6ac;
-        outline: none;
-      }
-
-      /* File input and label button styling */
-      .file-input-container {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 25px;
-        /* Extra space to prevent overlap */
-      }
-
-      .input input[type="file"] {
-        color: #474747;
-        /* Red color for text */
-        font-size: 16px;
-        border: 1px solid #4db6ac;
-        /* Green border */
-        border-radius: 8px;
-        background-color: #ffffff;
-        /* White background */
-        padding: 10px 15px;
-        cursor: pointer;
-        transition:
-          background-color 0.3s,
-          box-shadow 0.3s,
-          color 0.3s;
-        width: auto;
-      }
-
+      .input input[type="text"],
+      .input button,
       .input input[type="file"]::file-selector-button {
-        padding: 10px 15px;
-        background-color: #ffffff;
-        color: #e53935;
-        /* Red color for text */
-        font-size: 16px;
-        font-weight: bold;
-        border: 1px solid #97b0ae;
-        /* Green border */
-        border-radius: 8px;
-        cursor: pointer;
-        transition:
-          background-color 0.3s,
-          color 0.3s,
-          box-shadow 0.3s;
+        font-size: 14px;
+        padding: 8px 12px;
       }
+    }
 
-      .input input[type="file"]::file-selector-button:hover {
-        background-color: #e53935;
-        color: #ffffff;
-        /* Change text to white on hover */
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-      }
+    /* Warning Notice */
+    .warning-notice {
+      background-color: #fff9c4;
+      /* Light yellow background */
+      border: 1px solid #ffeb3b;
+      /* Slightly darker yellow border */
+      color: #665c00;
+      /* Darker text for readability */
+      padding: 15px;
+      border-radius: 5px;
+      font-family: Arial, sans-serif;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+    }
 
-      /* Send button styling */
-      .input button {
-        padding: 12px;
-        background-color: #00897b;
-        color: #ffffff;
-        font-size: 16px;
-        font-weight: bold;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        transition:
-          background-color 0.3s,
-          box-shadow 0.3s;
-        margin-top: 15px;
-        /* Added spacing to separate it from the file input */
-      }
+    .warning-notice span.icon {
+      font-size: 20px;
+      margin-right: 10px;
+    }
+  </style>
 
-      .input button:hover {
-        background-color: #00695c;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-      }
-
-      /* Responsive Design */
-      @media (max-width: 600px) {
-        .container {
-          padding: 20px;
-        }
-
-        h1 {
-          font-size: 1.5rem;
-        }
-
-        .input input[type="text"],
-        .input button,
-        .input input[type="file"]::file-selector-button {
-          font-size: 14px;
-          padding: 8px 12px;
-        }
-      }
-    </style>
-
-    <script>
-      function send() {
-        const textInput = $("#text-input").val();
-        const fileInput = $("#file-input")[0]; // Access the DOM element
-        let img = "";
-        const file = fileInput.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onloadend = () => {
-            img = reader.result;
-            console.log("Image Data URL: ", img);
-            $("button").text("Sending...");
-            sendAjaxRequest(textInput, img);
-          };
-          reader.readAsDataURL(file);
-        } else {
-          console.log("No image selected.");
+  <script>
+    function send() {
+      const textInput = $("#text-input").val();
+      const fileInput = $("#file-input")[0]; // Access the DOM element
+      let img = "";
+      const file = fileInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          img = reader.result;
+          console.log("Image Data URL: ", img);
           $("button").text("Sending...");
           sendAjaxRequest(textInput, img);
-        }
+        };
+        reader.readAsDataURL(file);
+      } else {
+        console.log("No image selected.");
+        $("button").text("Sending...");
+        sendAjaxRequest(textInput, img);
       }
+    }
 
-      function sendAjaxRequest(textInput, img) {
-        $.ajax({
-          url: "/api",
-          type: "POST",
-          data: JSON.stringify({ text: textInput, url: img }),
-          contentType: "application/json",
-          success: function (response) {
-            $(".output").html(response);
-            $("button").text("Send");
-          },
-          error: function (error) {
-            console.log("Error: ", error);
-            $(".output").text("Error occurred. Please try again.");
-            $("button").text("Send");
-          },
-        });
-      }
-    </script>
-  </head>
+    function sendAjaxRequest(textInput, img) {
+      $.ajax({
+        url: "/api",
+        type: "POST",
+        data: JSON.stringify({text: textInput, url: img}),
+        contentType: "application/json",
+        success: function (response) {
+          $(".output").html(response);
+          $("button").text("Send");
+        },
+        error: function (error) {
+          console.log("Error: ", error);
+          $(".output").text("Error occurred. Please try again.");
+          $("button").text("Send");
+        },
+      });
+    }
+  </script>
+</head>
 
-  <body>
-    <div class="container">
-      <h1>Medical Assistant</h1>
-      <div>
-        <div class="output"></div>
-        <div class="input">
-          <input
-            type="text"
-            placeholder="Type your symptoms here..."
-            id="text-input"
-          />
-          <input type="file" name="file-input" id="file-input" />
-          <button onclick="send()">Send</button>
-        </div>
+<body>
+  <div class="container">
+    <h1>Medical Assistant</h1>
+    <div>
+      <div class="output"></div>
+      <br />
+      <!-- Warning Notice -->
+      <div class="warning-notice">
+        <span class="icon">⚠️</span>
+        <span><strong>Notice:</strong> This content is generated by ChatGPT, is
+          not tested, and may contain false information.</span>
+      </div>
+      <div class="input">
+        <input type="text" placeholder="Type your symptoms here..." id="text-input" />
+        <input type="file" name="file-input" id="file-input" />
+        <button onclick="send()">Send</button>
       </div>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>
