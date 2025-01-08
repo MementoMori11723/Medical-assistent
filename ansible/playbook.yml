@@ -1,0 +1,8 @@
+---
+- hosts: vps
+  tasks:
+    - name: Pull the latest changes and run the makefile
+      shell: |
+        cd ~/Medical-assistent && git pull origin main && make stop && make
+      args:
+        executable: /bin/bash

@@ -1,0 +1,25 @@
+# Binaries
+main
+*.exe
+*.out
+
+# Local dependencies and caches
+vendor/
+*.log
+
+# Build directories
+bin/
+pkg/
+
+# IDE/editor config files
+.vscode/
+.idea/
+*.swp
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Git files
+.git
+.gitignore

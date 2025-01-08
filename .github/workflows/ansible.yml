@@ -1,0 +1,40 @@
+name: Run Ansible Playbook
+
+on:
+  push:
+    branches:
+      - main 
+
+jobs:
+  run-ansible:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Ansible and dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ansible sshpass
+
+      - name: Create inventory file
+        run: |
+          echo "[vps]" > ansible/inventory.ini
+          echo ${{ secrets.VPS_IP }} >> ansible/inventory.ini
+          echo "" >> ansible/inventory.ini
+          echo "[vps:vars]" >> ansible/inventory.ini
+          echo "ansible_ssh_user=${{ secrets.ANSIBLE_SSH_USER }}" >> ansible/inventory.ini
+          echo "ansible_ssh_private_key_file=~/.ssh/id_rsa" >> ansible/inventory.ini
+
+      - name: Add SSH private key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+      - name: Run Ansible playbook
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: "false"
+        run: |
+          ansible-playbook ansible/playbook.yml -i ansible/inventory.ini

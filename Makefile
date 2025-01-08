@@ -1,3 +1,6 @@
-run:
-	@echo Running the program...
-	@go run .
+run :
+	@docker-compose -f compose.yml build
+	@docker-compose -f compose.yml up -d
+
+stop :
+	@docker-compose -f compose.yml down --remove-orphans
