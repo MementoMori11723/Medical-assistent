@@ -1,20 +1,24 @@
 package main
 
 import (
-	"Medical-assistent/client"
 	"Medical-assistent/config"
 	"Medical-assistent/server"
-	"log"
+	"log/slog"
 	"net/http"
+	"os"
 )
 
 func main() {
-  PORT := config.GetPort()
-  client := client.New()
-  server := server.New()
-
-  http.Handle("/", client)
-  http.Handle("/api", server)
-  log.Println("Server running on http://localhost:"+PORT)
-  http.ListenAndServe(":"+PORT, nil)
+	PORT := config.GetPort()
+	handler := server.New()
+	server := &http.Server{
+		Addr:    ":" + PORT,
+		Handler: handler,
+	}
+	slog.Info("Server running on http://localhost:" + PORT)
+  err := server.ListenAndServe()
+  if err != nil {
+    slog.Error(err.Error())
+    os.Exit(1)
+  }
 }

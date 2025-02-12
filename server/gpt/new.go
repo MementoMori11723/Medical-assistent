@@ -42,11 +42,11 @@ func New(data string, img string) string {
 	url, apiKey, Type := config.GetGptData()
 	var request Request
 	client := &http.Client{
-		Timeout: time.Second * 10,
+		Timeout: time.Second * 60,
 	}
 
 	request = Request{
-		Model: "gpt-4o-mini",
+		Model: "deepseek-chat",
 		Messages: []message{
 			{
 				Role: "system",
@@ -71,7 +71,7 @@ func New(data string, img string) string {
 
 	if img != "" {
 		request = Request{
-			Model: "gpt-4o-mini",
+			Model: "deepseek-chat",
 			Messages: []message{
 				{
 					Role: "system",
