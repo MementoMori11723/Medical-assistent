@@ -1,12 +1,14 @@
 services:
   app:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ../
+      dockerfile: config/Dockerfile
     container_name: medical-app
     env_file:
       - app.env
     expose:
       - "5000"
-    ports:
-      - "7000:5000"
+
+networks:
+  deploy_net:
+    external: true
